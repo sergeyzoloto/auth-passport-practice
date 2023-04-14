@@ -1,2 +1,3 @@
 # finance-tracker
-Using React, MySQL, Express.js and Node.js
+
+Using React, MongoDB, Express.js and Node.js
