@@ -5,15 +5,16 @@ const passport = require('passport');
 const flash = require('express-flash');
 const session = require('express-session');
 const methodOverride = require('method-override');
+const User = require('./models/users');
+const connectDB = require('./config/db');
+connectDB();
 
 const initializePassport = require('./passport-config');
 initializePassport(
   passport,
-  (email) => users.find((user) => user.email === email),
-  (id) => users.find((user) => user.id === id),
+  async (email) => await User.findOne({ email: email }),
+  async (id) => await User.findById(id),
 );
-
-const users = [];
 
 app.set('view-engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
@@ -37,6 +38,7 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('login.ejs');
 });
 
+// HTTP POST request for user login authentication
 app.post(
   '/login',
   checkNotAuthenticated,
@@ -54,12 +56,12 @@ app.get('/register', checkNotAuthenticated, (req, res) => {
 app.post('/register', checkNotAuthenticated, async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    users.push({
-      id: Date.now().toString(),
+    const newUser = new User({
       name: req.body.name,
       email: req.body.email,
       password: hashedPassword,
     });
+    await newUser.save();
     res.redirect('/login');
   } catch {
     res.redirect('/register');
