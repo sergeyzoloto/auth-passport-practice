@@ -1,9 +1,10 @@
 {
   "name": "finance-tracker",
   "version": "1.0.0",
-  "description": "Using React, MySQL, Express.js and Node.js",
-  "main": "index.js",
+  "description": "Using React, MongoDB, Express.js and Node.js",
+  "main": "server.js",
   "scripts": {
+    "test": "jest",
     "devStart": "nodemon server.js"
   },
   "keywords": [],
@@ -22,7 +23,11 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.21.4",
+    "babel-jest": "^29.5.0",
     "dotenv": "^16.0.3",
-    "nodemon": "^2.0.22"
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.22",
+    "supertest": "^6.3.3"
   }
 }
