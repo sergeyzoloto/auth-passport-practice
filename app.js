@@ -1,12 +1,10 @@
-// app.js
-
 const express = require('express');
 const app = express();
 const passport = require('passport');
 const flash = require('express-flash');
 const session = require('express-session');
 const methodOverride = require('method-override');
-const User = require('./models/users');
+const User = require('./models/User');
 const { checkAuthenticated } = require('./controllers/authController');
 
 // Connect to MongoDB

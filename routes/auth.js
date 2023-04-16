@@ -1,11 +1,9 @@
-// routes/auth.js
-
+const passport = require('passport');
 const express = require('express');
 const router = express.Router();
 const {
   checkNotAuthenticated,
   addNewUser,
-  authenticateUser,
 } = require('../controllers/authController');
 
 router.get('/login', checkNotAuthenticated, (req, res) => {
@@ -13,7 +11,15 @@ router.get('/login', checkNotAuthenticated, (req, res) => {
 });
 
 // HTTP POST request for user login authentication
-router.post('/login', checkNotAuthenticated, authenticateUser);
+router.post(
+  '/login',
+  checkNotAuthenticated,
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true,
+  }),
+);
 
 router.get('/register', checkNotAuthenticated, (req, res) => {
   res.render('register.ejs');
