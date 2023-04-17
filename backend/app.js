@@ -5,6 +5,7 @@ const flash = require('express-flash');
 const session = require('express-session');
 const methodOverride = require('method-override');
 const User = require('./models/User');
+const colors = require('colors');
 const { checkAuthenticated } = require('./controllers/authController.js');
 
 // Connect to MongoDB
@@ -31,10 +32,20 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(methodOverride('_method'));
+app.use((req, res, next) => {
+  console.log(
+    `${req.method}`.bgCyan.bold.underline,
+    `${req.path}`.brightGreen.bold.underline,
+    `${Object.keys(req.body)}`.brightGreen.bold.underline,
+  );
+  next();
+});
 
 // Routes
 const authRouter = require('./routes/auth.js');
-app.use(authRouter);
+const transactionRoutes = require('./routes/transactions');
+app.use('/api/transactions', transactionRoutes);
+app.use('/auth', authRouter);
 
 app.get('/', checkAuthenticated, (req, res) => {
   res.render('index.ejs', { name: req.user.name });
