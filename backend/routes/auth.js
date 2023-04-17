@@ -4,7 +4,7 @@ const router = express.Router();
 const {
   checkNotAuthenticated,
   addNewUser,
-} = require('../controllers/authController');
+} = require('../controllers/authController.js');
 
 router.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('login.ejs');
